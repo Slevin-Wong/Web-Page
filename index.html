@@ -142,38 +142,45 @@
     </div>
 
     <script>
-        // 数据
-        let galleryCurrent = parseInt(localStorage.getItem('galleryCurrent')) || 0;
-        let toplistCurrent = parseInt(localStorage.getItem('toplistCurrent')) || 0;
-        let telegramCurrent = parseInt(localStorage.getItem('telegramCurrent')) || 0;
+        // 从 data.json 文件中读取数据
+        fetch('data/data.json')
+          .then(response => response.json())
+          .then(data => {
+            galleryCurrent = data.galleryCurrent;
+            toplistCurrent = data.toplistCurrent;
+            telegramCurrent = data.telegramCurrent;
 
-        // 初始化
-        document.getElementById('gallery-current').value = galleryCurrent;
-        document.getElementById('toplist-current').value = toplistCurrent;
-        document.getElementById('telegram-current').value = telegramCurrent;
+            // 初始化页面
+            document.getElementById('gallery-current').value = galleryCurrent;
+            document.getElementById('toplist-current').value = toplistCurrent;
+            document.getElementById('telegram-current').value = telegramCurrent;
 
-        updateProgress('gallery', galleryCurrent, 5000000);
-        updateProgress('toplist', toplistCurrent, 50);
-        updateProgress('telegram', telegramCurrent, 50);
-
-        // 监听输入框变化
-        document.getElementById('gallery-current').addEventListener('input', function() {
-            galleryCurrent = parseInt(this.value) || 0;
-            localStorage.setItem('galleryCurrent', galleryCurrent);
             updateProgress('gallery', galleryCurrent, 5000000);
-        });
-
-        document.getElementById('toplist-current').addEventListener('input', function() {
-            toplistCurrent = parseInt(this.value) || 0;
-            localStorage.setItem('toplistCurrent', toplistCurrent);
             updateProgress('toplist', toplistCurrent, 50);
-        });
-
-        document.getElementById('telegram-current').addEventListener('input', function() {
-            telegramCurrent = parseInt(this.value) || 0;
-            localStorage.setItem('telegramCurrent', telegramCurrent);
             updateProgress('telegram', telegramCurrent, 50);
-        });
+
+            // 监听输入框变化
+            document.getElementById('gallery-current').addEventListener('input', function() {
+                galleryCurrent = parseInt(this.value) || 0;
+                localStorage.setItem('galleryCurrent', galleryCurrent);
+                updateProgress('gallery', galleryCurrent, 5000000);
+                updateData(); // 更新 data.json 文件
+            });
+
+            document.getElementById('toplist-current').addEventListener('input', function() {
+                toplistCurrent = parseInt(this.value) || 0;
+                localStorage.setItem('toplistCurrent', toplistCurrent);
+                updateProgress('toplist', toplistCurrent, 50);
+                updateData(); // 更新 data.json 文件
+            });
+
+            document.getElementById('telegram-current').addEventListener('input', function() {
+                telegramCurrent = parseInt(this.value) || 0;
+                localStorage.setItem('telegramCurrent', telegramCurrent);
+                updateProgress('telegram', telegramCurrent, 50);
+                updateData(); // 更新 data.json 文件
+            });
+          });
 
         function updateProgress(id, current, increment) {
             const progressBar = document.getElementById(id + '-progress');
@@ -193,6 +200,27 @@
 
             progressBar.style.width = (progress * 100) + '%';
             progressText.textContent = `${last} → ${target}`;
+        }
+
+        // 更新 data.json 文件
+        function updateData() {
+            const data = {
+                galleryCurrent: galleryCurrent,
+                toplistCurrent: toplistCurrent,
+                telegramCurrent: telegramCurrent
+            };
+
+            fetch('data/data.json', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data updated:', data);
+            });
         }
     </script>
 </body>
