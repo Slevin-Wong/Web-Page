@@ -100,8 +100,8 @@
 
         <div class="progress-item">
             <div class="input-group">
-                <label for="gallery-current">Total Gallery Visitors:</label>
-                <input type="number" id="gallery-current" value="0">
+                <label for="gallery-current">Total Gallery Visitors (Millions):</label>
+                <input type="number" id="gallery-current" value="0" step="0.01">
             </div>
             <div class="progress-label">
                 <span>Progress:</span>
@@ -142,45 +142,42 @@
     </div>
 
     <script>
-        // 从 data.json 文件中读取数据
         fetch('data/data.json')
-          .then(response => response.json())
-          .then(data => {
-            galleryCurrent = data.galleryCurrent;
-            toplistCurrent = data.toplistCurrent;
-            telegramCurrent = data.telegramCurrent;
+            .then(response => response.json())
+            .then(data => {
+                let galleryCurrent = data.galleryCurrent;
+                let toplistCurrent = data.toplistCurrent;
+                let telegramCurrent = data.telegramCurrent;
 
-            // 初始化页面
-            document.getElementById('gallery-current').value = galleryCurrent;
-            document.getElementById('toplist-current').value = toplistCurrent;
-            document.getElementById('telegram-current').value = telegramCurrent;
+                document.getElementById('gallery-current').value = (galleryCurrent / 1000000).toFixed(2);
+                document.getElementById('toplist-current').value = toplistCurrent;
+                document.getElementById('telegram-current').value = telegramCurrent;
 
-            updateProgress('gallery', galleryCurrent, 5000000);
-            updateProgress('toplist', toplistCurrent, 50);
-            updateProgress('telegram', telegramCurrent, 50);
-
-            // 监听输入框变化
-            document.getElementById('gallery-current').addEventListener('input', function() {
-                galleryCurrent = parseInt(this.value) || 0;
-                localStorage.setItem('galleryCurrent', galleryCurrent);
                 updateProgress('gallery', galleryCurrent, 5000000);
-                updateData(); // 更新 data.json 文件
-            });
-
-            document.getElementById('toplist-current').addEventListener('input', function() {
-                toplistCurrent = parseInt(this.value) || 0;
-                localStorage.setItem('toplistCurrent', toplistCurrent);
                 updateProgress('toplist', toplistCurrent, 50);
-                updateData(); // 更新 data.json 文件
-            });
-
-            document.getElementById('telegram-current').addEventListener('input', function() {
-                telegramCurrent = parseInt(this.value) || 0;
-                localStorage.setItem('telegramCurrent', telegramCurrent);
                 updateProgress('telegram', telegramCurrent, 50);
-                updateData(); // 更新 data.json 文件
+
+                document.getElementById('gallery-current').addEventListener('input', function() {
+                    galleryCurrent = parseFloat(this.value) * 1000000 || 0;
+                    localStorage.setItem('galleryCurrent', galleryCurrent);
+                    updateProgress('gallery', galleryCurrent, 5000000);
+                    updateData();
+                });
+
+                document.getElementById('toplist-current').addEventListener('input', function() {
+                    toplistCurrent = parseInt(this.value) || 0;
+                    localStorage.setItem('toplistCurrent', toplistCurrent);
+                    updateProgress('toplist', toplistCurrent, 50);
+                    updateData();
+                });
+
+                document.getElementById('telegram-current').addEventListener('input', function() {
+                    telegramCurrent = parseInt(this.value) || 0;
+                    localStorage.setItem('telegramCurrent', telegramCurrent);
+                    updateProgress('telegram', telegramCurrent, 50);
+                    updateData();
+                });
             });
-          });
 
         function updateProgress(id, current, increment) {
             const progressBar = document.getElementById(id + '-progress');
@@ -202,12 +199,11 @@
             progressText.textContent = `${last} → ${target}`;
         }
 
-        // 更新 data.json 文件
         function updateData() {
             const data = {
-                galleryCurrent: galleryCurrent,
-                toplistCurrent: toplistCurrent,
-                telegramCurrent: telegramCurrent
+                galleryCurrent: parseFloat(document.getElementById('gallery-current').value) * 1000000 || 0,
+                toplistCurrent: parseInt(document.getElementById('toplist-current').value) || 0,
+                telegramCurrent: parseInt(document.getElementById('telegram-current').value) || 0
             };
 
             fetch('data/data.json', {
