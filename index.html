@@ -119,31 +119,4 @@
             </div>
             <div class="progress-label">
                 <span>Progress:</span>
-                <span id="toplist-progress-text">0 → 0</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-inner" id="toplist-progress"></div>
-            </div>
-        </div>
-
-        <div class="progress-item">
-            <div class="input-group">
-                <label for="telegram-current">Telegram Group Members:</label>
-                <input type="number" id="telegram-current" value="0">
-            </div>
-            <div class="progress-label">
-                <span>Progress:</span>
-                <span id="telegram-progress-text">0 → 0</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-inner" id="telegram-progress"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        fetch('data/data.json')
-            .then(response => response.json())
-            .then(data => {
-                // Remove commas from string values and convert to Number
-                let galleryCurrentStr = String(data.galleryCurrent).replace(/,/g, '');
+                <span id
