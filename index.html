@@ -110,7 +110,7 @@
             <div class="progress-bar">
                 <div class="progress-bar-inner" id="gallery-progress"></div>
             </div>
-          </div>
+        </div>
 
         <div class="progress-item">
             <div class="input-group">
@@ -145,81 +145,5 @@
         fetch('data/data.json')
             .then(response => response.json())
             .then(data => {
-                // 从 data.json 读取数据，并移除千分位逗号
-                let galleryCurrent = data.galleryCurrent ? data.galleryCurrent.toString().replace(/,/g, '') : '0';
-                let toplistCurrent = data.toplistCurrent ? data.toplistCurrent.toString().replace(/,/g, '') : '0';
-                let telegramCurrent = data.telegramCurrent ? data.telegramCurrent.toString().replace(/,/g, '') : '0';
-
-                // 确保移除逗号后转换为数字，再进行后续操作
-                document.getElementById('gallery-current').value = (parseFloat(galleryCurrent) / 1000000).toFixed(2);
-                document.getElementById('toplist-current').value = parseInt(toplistCurrent);
-                document.getElementById('telegram-current').value = parseInt(telegramCurrent);
-
-                updateProgress('gallery', galleryCurrent, 5000000);
-                updateProgress('toplist', toplistCurrent, 50);
-                updateProgress('telegram', telegramCurrent, 50);
-
-                document.getElementById('gallery-current').addEventListener('input', function() {
-                    galleryCurrent = parseFloat(this.value) * 1000000 || 0;
-                    localStorage.setItem('galleryCurrent', galleryCurrent);
-                    updateProgress('gallery', galleryCurrent, 5000000);
-                    updateData();
-                });
-
-                document.getElementById('toplist-current').addEventListener('input', function() {
-                    toplistCurrent = parseInt(this.value) || 0;
-                    localStorage.setItem('toplistCurrent', toplistCurrent);
-                    updateProgress('toplist', toplistCurrent, 50);
-                    updateData();
-                });
-
-                document.getElementById('telegram-current').addEventListener('input', function() {
-                    telegramCurrent = parseInt(this.value) || 0;
-                    localStorage.setItem('telegramCurrent', telegramCurrent);
-                    updateProgress('telegram', telegramCurrent, 50);
-                    updateData();
-                });
-            });
-
-        function updateProgress(id, current, increment) {
-            const progressBar = document.getElementById(id + '-progress');
-            const progressText = document.getElementById(id + '-progress-text');
-
-            let target = Math.ceil(current / increment) * increment;
-            let last = target - increment;
-
-            let progress;
-            if (id === 'toplist') {
-                target = Math.floor(current / increment) * increment;
-                last = target + increment;
-                progress = (last - current) / increment;
-            } else {
-                progress = (current - last) / increment;
-            }
-
-            progressBar.style.width = (progress * 100) + '%';
-            progressText.textContent = `${last} → ${target}`;
-        }
-
-        function updateData() {
-            const data = {
-                galleryCurrent: parseFloat(document.getElementById('gallery-current').value) * 1000000 || 0,
-                toplistCurrent: parseInt(document.getElementById('toplist-current').value) || 0,
-                telegramCurrent: parseInt(document.getElementById('telegram-current').value) || 0
-            };
-
-            fetch('data/data.json', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Data updated:', data);
-            });
-        }
-    </script>
-</body>
-</html>
+                // Remove commas from string values and convert to Number
+                let galleryCurrentStr = String(data.galleryCurrent).replace(/,/g, '');
