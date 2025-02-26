@@ -1,223 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celebration Day Countdown</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celebration Day Countdown</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-        .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            width: 500px;
-        }
+        .container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            width: 500px;
+        }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
-        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+        }
 
-        .progress-item {
-            margin-bottom: 30px;
-        }
+        .progress-item {
+            margin-bottom: 30px;
+        }
 
-        .input-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-        .input-group label {
-            margin-right: 15px;
-            font-size: 16px;
-            color: #555;
-        }
+        .input-group label {
+            margin-right: 15px;
+            font-size: 16px;
+            color: #555;
+        }
 
-        .input-group input {
-            width: 120px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            font-size: 16px;
-        }
+        .input-group input {
+            width: 120px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 16px;
+        }
 
-        .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 16px;
-            color: #555;
-        }
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #555;
+        }
 
-        .progress-bar {
-            width: 100%;
-            height: 25px;
-            background-color: #eee;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
+        .progress-bar {
+            width: 100%;
+            height: 25px;
+            background-color: #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
 
-        .progress-bar-inner {
-            height: 100%;
-            background: linear-gradient(to right, #4CAF50, #8BC34A);
-            border-radius: 8px;
-            width: 0;
-            transition: width 0.5s ease-in-out;
-            animation: progress-animation 1s linear infinite;
-        }
+        .progress-bar-inner {
+            height: 100%;
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            border-radius: 8px;
+            width: 0;
+            transition: width 0.5s ease-in-out;
+            animation: progress-animation 1s linear infinite;
+        }
 
-        @keyframes progress-animation {
-            0% {
-                background-color: #4CAF50;
-            }
-            50% {
-                background-color: #8BC34A;
-            }
-            100% {
-                background-color: #4CAF50;
-            }
-        }
-    </style>
+        @keyframes progress-animation {
+            0% {
+                background-color: #4CAF50;
+            }
+            50% {
+                background-color: #8BC34A;
+            }
+            100% {
+                background-color: #4CAF50;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Celebration Day Countdown</h1>
+    <div class="container">
+        <h1>Celebration Day Countdown</h1>
 
-        <div class="progress-item">
-            <div class="input-group">
-                <label for="gallery-current">Total Gallery Visitors (Millions):</label>
-                <input type="number" id="gallery-current" value="0" step="0.01">
-            </div>
-            <div class="progress-label">
-                <span>Progress:</span>
-                <span id="gallery-progress-text">0 → 0</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-inner" id="gallery-progress"></div>
-            </div>
-        </div>
+        <div class="progress-item">
+            <div class="input-group">
+                <label for="gallery-current">Total Gallery Visitors (Millions):</label>
+                <input type="number" id="gallery-current" value="0" step="0.01">
+            </div>
+            <div class="progress-label">
+                <span>Progress:</span>
+                <span id="gallery-progress-text">0 → 0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" id="gallery-progress"></div>
+            </div>
+          </div>
 
-        <div class="progress-item">
-            <div class="input-group">
-                <label for="toplist-current">Uploader All-Time Toplist:</label>
-                <input type="number" id="toplist-current" value="0">
-            </div>
-            <div class="progress-label">
-                <span>Progress:</span>
-                <span id="toplist-progress-text">0 → 0</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-inner" id="toplist-progress"></div>
-            </div>
-        </div>
+        <div class="progress-item">
+            <div class="input-group">
+                <label for="toplist-current">Uploader All-Time Toplist:</label>
+                <input type="number" id="toplist-current" value="0">
+            </div>
+            <div class="progress-label">
+                <span>Progress:</span>
+                <span id="toplist-progress-text">0 → 0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" id="toplist-progress"></div>
+            </div>
+        </div>
 
-        <div class="progress-item">
-            <div class="input-group">
-                <label for="telegram-current">Telegram Group Members:</label>
-                <input type="number" id="telegram-current" value="0">
-            </div>
-            <div class="progress-label">
-                <span>Progress:</span>
-                <span id="telegram-progress-text">0 → 0</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-inner" id="telegram-progress"></div>
-            </div>
-        </div>
-    </div>
+        <div class="progress-item">
+            <div class="input-group">
+                <label for="telegram-current">Telegram Group Members:</label>
+                <input type="number" id="telegram-current" value="0">
+            </div>
+            <div class="progress-label">
+                <span>Progress:</span>
+                <span id="telegram-progress-text">0 → 0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" id="telegram-progress"></div>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        fetch('data/data.json')
-            .then(response => response.json())
-            .then(data => {
-                let galleryCurrent = data.galleryCurrent;
-                let toplistCurrent = data.toplistCurrent;
-                let telegramCurrent = data.telegramCurrent;
+    <script>
+        fetch('data/data.json')
+            .then(response => response.json())
+            .then(data => {
+                // 从 data.json 读取数据，并移除千分位逗号
+                let galleryCurrent = data.galleryCurrent ? data.galleryCurrent.toString().replace(/,/g, '') : '0';
+                let toplistCurrent = data.toplistCurrent ? data.toplistCurrent.toString().replace(/,/g, '') : '0';
+                let telegramCurrent = data.telegramCurrent ? data.telegramCurrent.toString().replace(/,/g, '') : '0';
 
-                document.getElementById('gallery-current').value = (galleryCurrent / 1000000).toFixed(2);
-                document.getElementById('toplist-current').value = toplistCurrent;
-                document.getElementById('telegram-current').value = telegramCurrent;
+                // 确保移除逗号后转换为数字，再进行后续操作
+                document.getElementById('gallery-current').value = (parseFloat(galleryCurrent) / 1000000).toFixed(2);
+                document.getElementById('toplist-current').value = parseInt(toplistCurrent);
+                document.getElementById('telegram-current').value = parseInt(telegramCurrent);
 
-                updateProgress('gallery', galleryCurrent, 5000000);
-                updateProgress('toplist', toplistCurrent, 50);
-                updateProgress('telegram', telegramCurrent, 50);
+                updateProgress('gallery', galleryCurrent, 5000000);
+                updateProgress('toplist', toplistCurrent, 50);
+                updateProgress('telegram', telegramCurrent, 50);
 
-                document.getElementById('gallery-current').addEventListener('input', function() {
-                    galleryCurrent = parseFloat(this.value) * 1000000 || 0;
-                    localStorage.setItem('galleryCurrent', galleryCurrent);
-                    updateProgress('gallery', galleryCurrent, 5000000);
-                    updateData();
-                });
+                document.getElementById('gallery-current').addEventListener('input', function() {
+                    galleryCurrent = parseFloat(this.value) * 1000000 || 0;
+                    localStorage.setItem('galleryCurrent', galleryCurrent);
+                    updateProgress('gallery', galleryCurrent, 5000000);
+                    updateData();
+                });
 
-                document.getElementById('toplist-current').addEventListener('input', function() {
-                    toplistCurrent = parseInt(this.value) || 0;
-                    localStorage.setItem('toplistCurrent', toplistCurrent);
-                    updateProgress('toplist', toplistCurrent, 50);
-                    updateData();
-                });
+                document.getElementById('toplist-current').addEventListener('input', function() {
+                    toplistCurrent = parseInt(this.value) || 0;
+                    localStorage.setItem('toplistCurrent', toplistCurrent);
+                    updateProgress('toplist', toplistCurrent, 50);
+                    updateData();
+                });
 
-                document.getElementById('telegram-current').addEventListener('input', function() {
-                    telegramCurrent = parseInt(this.value) || 0;
-                    localStorage.setItem('telegramCurrent', telegramCurrent);
-                    updateProgress('telegram', telegramCurrent, 50);
-                    updateData();
-                });
-            });
+                document.getElementById('telegram-current').addEventListener('input', function() {
+                    telegramCurrent = parseInt(this.value) || 0;
+                    localStorage.setItem('telegramCurrent', telegramCurrent);
+                    updateProgress('telegram', telegramCurrent, 50);
+                    updateData();
+                });
+            });
 
-        function updateProgress(id, current, increment) {
-            const progressBar = document.getElementById(id + '-progress');
-            const progressText = document.getElementById(id + '-progress-text');
+        function updateProgress(id, current, increment) {
+            const progressBar = document.getElementById(id + '-progress');
+            const progressText = document.getElementById(id + '-progress-text');
 
-            let target = Math.ceil(current / increment) * increment;
-            let last = target - increment;
+            let target = Math.ceil(current / increment) * increment;
+            let last = target - increment;
 
-            let progress;
-            if (id === 'toplist') {
-                target = Math.floor(current / increment) * increment;
-                last = target + increment;
-                progress = (last - current) / increment;
-            } else {
-                progress = (current - last) / increment;
-            }
+            let progress;
+            if (id === 'toplist') {
+                target = Math.floor(current / increment) * increment;
+                last = target + increment;
+                progress = (last - current) / increment;
+            } else {
+                progress = (current - last) / increment;
+            }
 
-            progressBar.style.width = (progress * 100) + '%';
-            progressText.textContent = `${last} → ${target}`;
-        }
+            progressBar.style.width = (progress * 100) + '%';
+            progressText.textContent = `${last} → ${target}`;
+        }
 
-        function updateData() {
-            const data = {
-                galleryCurrent: parseFloat(document.getElementById('gallery-current').value) * 1000000 || 0,
-                toplistCurrent: parseInt(document.getElementById('toplist-current').value) || 0,
-                telegramCurrent: parseInt(document.getElementById('telegram-current').value) || 0
-            };
+        function updateData() {
+            const data = {
+                galleryCurrent: parseFloat(document.getElementById('gallery-current').value) * 1000000 || 0,
+                toplistCurrent: parseInt(document.getElementById('toplist-current').value) || 0,
+                telegramCurrent: parseInt(document.getElementById('telegram-current').value) || 0
+            };
 
-            fetch('data/data.json', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Data updated:', data);
-            });
-        }
-    </script>
+            fetch('data/data.json', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data updated:', data);
+            });
+        }
+    </script>
 </body>
 </html>
