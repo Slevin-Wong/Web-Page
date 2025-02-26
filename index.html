@@ -40,8 +40,9 @@
 
         .input-group label {
             margin-right: 15px; /* 设置标签的右外边距为15像素，与输入框分隔开 */
-            font-size: 16px; /* 设置标签字体大小为16像素 */
-            color: #555; /* 设置标签文本颜色为灰色 */
+            font-size: 17px; /* **调整字体大小：** 设置指标标签字体大小为17像素 (稍微增大) */
+            font-weight: bold; /* **加粗：** 设置指标标签字体为粗体 */
+            color: #555; /* 设置标签文本颜色为灰色 (保持不变) */
         }
 
         .input-group input {
@@ -51,15 +52,27 @@
             border-radius: 5px; /* 设置输入框边框圆角为5像素 */
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 设置输入框阴影效果 */
             font-size: 16px; /* 设置输入框字体大小为16像素 */
+            color: #333; /* **调整颜色：** 设置输入框文本颜色为深灰色 (稍微加深，突出数值) */
         }
 
         .progress-label {
             display: flex; /* 使用 Flexbox 布局 */
             justify-content: space-between; /* Flexbox 元素在主轴上两端对齐，平均分布剩余空间 (使 "Progress:" 和进度文本分居两端) */
             margin-bottom: 8px; /* 设置进度标签的下外边距为8像素 */
-            font-size: 16px; /* 设置进度标签字体大小为16像素 */
-            color: #555; /* 设置进度标签文本颜色为灰色 */
+            font-size: 16px; /* 设置进度标签字体大小为16像素 (保持不变) */
+            color: #555; /* 设置进度标签文本颜色为灰色 (保持不变) */
         }
+
+        .progress-label span:first-child {
+            /* "Progress:" 标签样式 */
+            color: #555; /* 设置 "Progress:" 标签颜色为灰色 (保持不变) */
+        }
+
+        .progress-label span:last-child {
+            /* 进度范围文本 (例如 "0 → 0") 样式 */
+            color: #777; /* **调整颜色：** 设置进度范围文本颜色为浅灰色，弱化显示 */
+        }
+
 
         .progress-bar {
             width: 100%; /* 进度条宽度占满父元素 */
