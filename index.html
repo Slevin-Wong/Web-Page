@@ -1,234 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Celebration Day Countdown</title>
-    <style>
+    <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Celebration Day Countdown</title> <style>
+        /* CSS 样式定义 */
         body {
-            font-family: sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
+            font-family: sans-serif; /* 设置页面默认字体为 sans-serif */
+            background-color: #f4f4f4; /* 设置页面背景颜色为浅灰色 */
+            display: flex; /* 使用 Flexbox 布局 */
+            flex-direction: column; /* Flexbox 主轴方向为垂直方向，元素垂直排列 */
+            align-items: center; /* Flexbox 元素在交叉轴上居中对齐 (水平居中) */
+            justify-content: center; /* Flexbox 元素在主轴上居中对齐 (垂直居中) */
+            min-height: 100vh; /* 页面最小高度为视口高度，确保内容至少占满整个屏幕 */
+            margin: 0; /* 移除body的默认外边距 */
         }
 
         .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            width: 500px;
+            background-color: #fff; /* 设置容器背景颜色为白色 */
+            padding: 40px; /* 设置容器内边距为40像素 */
+            border-radius: 10px; /* 设置容器边框圆角为10像素 */
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* 设置容器阴影效果 */
+            width: 500px; /* 设置容器宽度为500像素 */
         }
 
         h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #333;
+            text-align: center; /* 设置标题文本居中对齐 */
+            margin-bottom: 30px; /* 设置标题下外边距为30像素 */
+            color: #333; /* 设置标题文本颜色为深灰色 */
         }
 
         .progress-item {
-            margin-bottom: 30px;
+            margin-bottom: 30px; /* 设置每个进度条项的下外边距为30像素 */
         }
 
         .input-group {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
+            display: flex; /* 使用 Flexbox 布局 */
+            align-items: center; /* Flexbox 元素在交叉轴上居中对齐 (垂直居中标签和输入框) */
+            margin-bottom: 15px; /* 设置输入组的下外边距为15像素 */
         }
 
         .input-group label {
-            margin-right: 15px;
-            font-size: 16px;
-            color: #555;
+            margin-right: 15px; /* 设置标签的右外边距为15像素，与输入框分隔开 */
+            font-size: 16px; /* 设置标签字体大小为16像素 */
+            color: #555; /* 设置标签文本颜色为灰色 */
         }
 
         .input-group input {
-            width: 120px;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-            font-size: 16px;
+            width: 120px; /* 设置输入框宽度为120像素 */
+            padding: 8px; /* 设置输入框内边距为8像素 */
+            border: 1px solid #ddd; /* 设置输入框边框为1像素灰色实线 */
+            border-radius: 5px; /* 设置输入框边框圆角为5像素 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 设置输入框阴影效果 */
+            font-size: 16px; /* 设置输入框字体大小为16像素 */
         }
 
         .progress-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-size: 16px;
-            color: #555;
+            display: flex; /* 使用 Flexbox 布局 */
+            justify-content: space-between; /* Flexbox 元素在主轴上两端对齐，平均分布剩余空间 (使 "Progress:" 和进度文本分居两端) */
+            margin-bottom: 8px; /* 设置进度标签的下外边距为8像素 */
+            font-size: 16px; /* 设置进度标签字体大小为16像素 */
+            color: #555; /* 设置进度标签文本颜色为灰色 */
         }
 
         .progress-bar {
-            width: 100%;
-            height: 25px;
-            background-color: #eee;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            width: 100%; /* 进度条宽度占满父元素 */
+            height: 25px; /* 进度条高度为25像素 */
+            background-color: #eee; /* 进度条背景颜色为浅灰色 */
+            border-radius: 8px; /* 进度条边框圆角为8像素 */
+            overflow: hidden; /* 隐藏超出边框的内容，用于实现圆角进度条效果 */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 设置进度条阴影效果 */
         }
 
         .progress-bar-inner {
-            height: 100%;
-            background: linear-gradient(to right, #4CAF50, #8BC34A);
-            border-radius: 8px;
-            width: 0;
-            transition: width 0.5s ease-in-out;
-            animation: progress-animation 1s linear infinite;
+            height: 100%; /* 进度条内部元素高度占满父元素 */
+            background: linear-gradient(to right, #4CAF50, #8BC34A); /* 设置进度条内部元素背景为从绿色到黄绿色的线性渐变 */
+            border-radius: 8px; /* 进度条内部元素边框圆角为8像素，与外部进度条一致 */
+            width: 0; /* 初始宽度为0，通过JS动态设置宽度来显示进度 */
+            transition: width 0.5s ease-in-out; /* 设置宽度变化的过渡效果，使进度条动画平滑 */
+            animation: progress-animation 1s linear infinite; /* 应用名为 progress-animation 的动画，1秒周期，线性速度，无限循环 */
         }
 
         @keyframes progress-animation {
+            /* 定义名为 progress-animation 的关键帧动画 */
             0% {
-                background-color: #4CAF50;
+                background-color: #4CAF50; /* 动画 0% 时背景颜色为绿色 */
             }
             50% {
-                background-color: #8BC34A;
+                background-color: #8BC34A; /* 动画 50% 时背景颜色为黄绿色 */
             }
             100% {
-                background-color: #4CAF50;
+                background-color: #4CAF50; /* 动画 100% 时背景颜色为绿色 (循环回到初始颜色) */
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Celebration Day Countdown</h1>
-
-        <div class="progress-item">
-            <div class="input-group">
-                <label for="gallery-current">Total Gallery Visitors (Millions):</label>
-                <input type="number" id="gallery-current" value="0" step="0.01">
-            </div>
-            <div class="progress-label">
-                <span>Progress:</span>
-                <span id="gallery-progress-text">0 → 0</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-inner" id="gallery-progress"></div>
-            </div>
+    <div class="container">  <h1>Celebration Day Countdown</h1>  <div class="progress-item">  <div class="input-group">  <label for="gallery-current">Total Gallery Visitors (Millions):</label>  <input type="number" id="gallery-current" value="0" step="0.01">  </div>
+            <div class="progress-label">  <span>Progress:</span>  <span id="gallery-progress-text">0 → 0</span>  </div>
+            <div class="progress-bar">  <div class="progress-bar-inner" id="gallery-progress"></div>  </div>
         </div>
 
-        <div class="progress-item">
-            <div class="input-group">
-                <label for="toplist-current">Uploader All-Time Toplist:</label>
-                <input type="number" id="toplist-current" value="0">
-            </div>
-            <div class="progress-label">
-                <span>Progress:</span>
-                <span id="toplist-progress-text">0 → 0</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-inner" id="toplist-progress"></div>
-            </div>
+        <div class="progress-item">  <div class="input-group">  <label for="toplist-current">Uploader All-Time Toplist:</label>  <input type="number" id="toplist-current" value="0">  </div>
+            <div class="progress-label">  <span>Progress:</span>  <span id="toplist-progress-text">0 → 0</span>  </div>
+            <div class="progress-bar">  <div class="progress-bar-inner" id="toplist-progress"></div>  </div>
         </div>
 
-        <div class="progress-item">
-            <div class="input-group">
-                <label for="telegram-current">Telegram Group Members:</label>
-                <input type="number" id="telegram-current" value="0">
-            </div>
-            <div class="progress-label">
-                <span>Progress:</span>
-                <span id="telegram-progress-text">0 → 0</span>
-            </div>
-            <div class="progress-bar">
-                <div class="progress-bar-inner" id="telegram-progress"></div>
-            </div>
+        <div class="progress-item">  <div class="input-group">  <label for="telegram-current">Telegram Group Members:</label>  <input type="number" id="telegram-current" value="0">  </div>
+            <div class="progress-label">  <span>Progress:</span>  <span id="telegram-progress-text">0 → 0</span>  </div>
+            <div class="progress-bar">  <div class="progress-bar-inner" id="telegram-progress"></div>  </div>
         </div>
     </div>
 
     <script>
         // JavaScript 代码
-        fetch('data/data.json')
-            .then(response => {
-                console.log("Fetch response:", response); // 调试信息: 输出 fetch 的 response 对象
-                return response.json();
-            })
-            .then(data => {
-                console.log("Raw data from JSON:", data); // 调试信息: 输出从 JSON 文件原始获取的 data 对象
+        fetch('data/data.json') // 使用 fetch API 请求 data/data.json 文件
+            .then(response => response.json()) // 当请求成功后，将响应解析为 JSON 格式
+            .then(data => { // 接收解析后的 JSON 数据
 
-                // 移除逗号处理的代码
-                let galleryCurrent = data.galleryCurrent;
-                let toplistCurrent = data.toplistCurrent;
-                let telegramCurrent = data.telegramCurrent;
+                // 从 data.json 读取数据，并移除千分位逗号 (如果存在)
+                // 使用 toString().replace(/,/g, '') 将数值转换为字符串，并移除所有逗号
+                // 如果 data.xxxCurrent 不存在，则默认为 '0'
+                let galleryCurrent = data.galleryCurrent ? data.galleryCurrent.toString().replace(/,/g, '') : '0';
+                let toplistCurrent = data.toplistCurrent ? data.toplistCurrent.toString().replace(/,/g, '') : '0';
+                let telegramCurrent = data.telegramCurrent ? data.telegramCurrent.toString().replace(/,/g, '') : '0';
 
-                console.log("Data after comma removal (actually no removal):", galleryCurrent, toplistCurrent, telegramCurrent); // 调试信息: 输出移除逗号后的数据 (实际上没有移除)
+                // 确保移除逗号后转换为数字，再进行后续操作
+                // parseFloat() 将 galleryCurrent 转换为浮点数 (用于百万访客，可能包含小数)
+                // parseInt() 将 toplistCurrent 和 telegramCurrent 转换为整数
+                document.getElementById('gallery-current').value = (parseFloat(galleryCurrent) / 1000000).toFixed(2); // 将处理后的画廊访客数 (百万) 设置为输入框的值，保留两位小数
+                document.getElementById('toplist-current').value = parseInt(toplistCurrent); // 将处理后的上传者榜单排名设置为输入框的值
+                document.getElementById('telegram-current').value = parseInt(telegramCurrent); // 将处理后的 Telegram 群组成员数设置为输入框的值
 
+                updateProgress('gallery', galleryCurrent, 5000000); // 初始化画廊访客进度条
+                updateProgress('toplist', toplistCurrent, 50); // 初始化上传者榜单排名进度条
+                updateProgress('telegram', telegramCurrent, 50); // 初始化 Telegram 群组成员数进度条
 
-                document.getElementById('gallery-current').value = (galleryCurrent / 1000000).toFixed(2);
-                document.getElementById('toplist-current').value = toplistCurrent;
-                document.getElementById('telegram-current').value = telegramCurrent;
-
-                console.log("Input values set:", document.getElementById('gallery-current').value, document.getElementById('toplist-current').value, document.getElementById('telegram-current').value); // 调试信息: 输出设置给输入框的值
-
-
-                updateProgress('gallery', galleryCurrent, 5000000);
-                updateProgress('toplist', toplistCurrent, 50);
-                updateProgress('telegram', telegramCurrent, 50);
-
+                // 为画廊访客输入框添加 input 事件监听器，当输入框内容改变时触发
                 document.getElementById('gallery-current').addEventListener('input', function() {
-                    galleryCurrent = parseFloat(this.value) * 1000000 || 0;
-                    localStorage.setItem('galleryCurrent', galleryCurrent);
-                    updateProgress('gallery', galleryCurrent, 5000000);
-                    updateData();
+                    galleryCurrent = parseFloat(this.value) * 1000000 || 0; // 获取输入框的值，转换为数字 (百万 -> 实际数量)，如果为空或转换失败则默认为0
+                    localStorage.setItem('galleryCurrent', galleryCurrent); // 将画廊访客数保存到 localStorage
+                    updateProgress('gallery', galleryCurrent, 5000000); // 更新画廊访客进度条
+                    updateData(); // 调用 updateData 函数更新数据 (PUT 请求，但代码中PUT请求部分有错误，目前不会生效)
                 });
 
+                // 为上传者榜单排名输入框添加 input 事件监听器
                 document.getElementById('toplist-current').addEventListener('input', function() {
-                    toplistCurrent = parseInt(this.value) || 0;
-                    localStorage.setItem('toplistCurrent', toplistCurrent);
-                    updateProgress('toplist', toplistCurrent, 50);
-                    updateData();
+                    toplistCurrent = parseInt(this.value) || 0; // 获取输入框的值，转换为整数，如果为空或转换失败则默认为0
+                    localStorage.setItem('toplistCurrent', toplistCurrent); // 将上传者榜单排名保存到 localStorage
+                    updateProgress('toplist', toplistCurrent, 50); // 更新上传者榜单排名进度条
+                    updateData(); // 调用 updateData 函数更新数据 (PUT 请求，但代码中PUT请求部分有错误，目前不会生效)
                 });
 
+                // 为 Telegram 群组成员数输入框添加 input 事件监听器
                 document.getElementById('telegram-current').addEventListener('input', function() {
-                    telegramCurrent = parseInt(this.value) || 0;
-                    localStorage.setItem('telegramCurrent', telegramCurrent);
-                    updateProgress('telegram', telegramCurrent, 50);
-                    updateData();
+                    telegramCurrent = parseInt(this.value) || 0; // 获取输入框的值，转换为整数，如果为空或转换失败则默认为0
+                    localStorage.setItem('telegramCurrent', telegramCurrent); // 将 Telegram 群组成员数保存到 localStorage
+                    updateProgress('telegram', telegramCurrent, 50); // 更新 Telegram 群组成员数进度条
+                    updateData(); // 调用 updateData 函数更新数据 (PUT 请求，但代码中PUT请求部分有错误，目前不会生效)
                 });
             });
 
+        // updateProgress 函数：更新进度条和进度文本
         function updateProgress(id, current, increment) {
-            const progressBar = document.getElementById(id + '-progress');
-            const progressText = document.getElementById(id + '-progress-text');
+            const progressBar = document.getElementById(id + '-progress'); // 获取进度条内部元素
+            const progressText = document.getElementById(id + '-progress-text'); // 获取进度文本元素
 
-            let target = Math.ceil(current / increment) * increment;
-            let last = target - increment;
+            let target = Math.ceil(current / increment) * increment; // 计算目标值，向上取整到 increment 的倍数
+            let last = target - increment; // 计算上一个目标值
 
-            let progress;
-            if (id === 'toplist') {
-                target = Math.floor(current / increment) * increment;
-                last = target + increment;
-                progress = (last - current) / increment;
-            } else {
-                progress = (current - last) / increment;
+            let progress; // 声明进度值变量
+            if (id === 'toplist') { // 如果是上传者榜单排名进度条
+                target = Math.floor(current / increment) * increment; // 目标值向下取整到 increment 的倍数 (榜单排名越小越好)
+                last = target + increment; // 上一个目标值加 increment
+                progress = (last - current) / increment; // 进度计算方式不同 (值越小进度越大)
+            } else { // 其他进度条 (画廊访客，Telegram 群组)
+                progress = (current - last) / increment; // 默认进度计算方式 (值越大进度越大)
             }
 
-            progressBar.style.width = (progress * 100) + '%';
-            progressText.textContent = `${last} → ${target}`;
+            progressBar.style.width = (progress * 100) + '%'; // 设置进度条内部元素的宽度，百分比形式
+            progressText.textContent = `${last} → ${target}`; // 更新进度文本，显示上一个目标值和当前目标值
         }
 
+        // updateData 函数：更新数据 (PUT 请求到 data.json，但代码中PUT请求部分有错误，目前不会生效)
         function updateData() {
-            const data = {
-                galleryCurrent: parseFloat(document.getElementById('gallery-current').value) * 1000000 || 0,
-                toplistCurrent: parseInt(document.getElementById('toplist-current').value) || 0,
-                telegramCurrent: parseInt(document.getElementById('telegram-current').value) || 0
+            const data = { // 创建包含当前输入框值的 JSON 数据对象
+                galleryCurrent: parseFloat(document.getElementById('gallery-current').value) * 1000000 || 0, // 获取画廊访客数输入框的值并转换为实际数量
+                toplistCurrent: parseInt(document.getElementById('toplist-current').value) || 0, // 获取上传者榜单排名输入框的值
+                telegramCurrent: parseInt(document.getElementById('telegram-current').value) || 0  // 获取 Telegram 群组成员数输入框的值
             };
 
-            fetch('data/data.json', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
+            fetch('data/data.json', { // 发起 PUT 请求到 data/data.json (用于更新数据)
+                method: 'PUT', // 设置请求方法为 PUT
+                headers: { // 设置请求头
+                    'Content-Type': 'application/json' // 设置 Content-Type 为 application/json，表明发送的是 JSON 数据
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(data) // 将 JSON 数据对象转换为 JSON 字符串作为请求体
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Data updated:', data);
+            .then(response => response.json()) // 当请求成功后，将响应解析为 JSON 格式
+            .then(data => { // 接收解析后的 JSON 数据
+                console.log('Data updated:', data); // 在控制台输出 "Data updated:" 和返回的数据，用于调试
             });
         }
     </script>
