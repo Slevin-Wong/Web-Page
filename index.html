@@ -119,4 +119,125 @@
             </div>
             <div class="progress-label">
                 <span>Progress:</span>
-                <span id
+                <span id="toplist-progress-text">0 → 0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" id="toplist-progress"></div>
+            </div>
+        </div>
+
+        <div class="progress-item">
+            <div class="input-group">
+                <label for="telegram-current">Telegram Group Members:</label>
+                <input type="number" id="telegram-current" value="0">
+            </div>
+            <div class="progress-label">
+                <span>Progress:</span>
+                <span id="telegram-progress-text">0 → 0</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-bar-inner" id="telegram-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        fetch('data/data.json')
+            .then(response => response.json())
+            .then(data => {
+                let galleryCurrent = data.galleryCurrent;
+                let toplistCurrent = data.toplistCurrent;
+                let telegramCurrent = data.telegramCurrent;
+
+                //  更精细的逗号处理：仅当数据是字符串时才移除逗号
+                if (typeof galleryCurrent === 'string') {
+                    galleryCurrent = parseFloat(galleryCurrent.replace(/,/g, ''));
+                } else {
+                    galleryCurrent = parseFloat(galleryCurrent); // 确保是数字，即使没有逗号
+                }
+
+                if (typeof toplistCurrent === 'string') {
+                    toplistCurrent = parseInt(toplistCurrent.replace(/,/g, ''));
+                } else {
+                    toplistCurrent = parseInt(toplistCurrent); // 确保是整数，即使没有逗号
+                }
+
+                if (typeof telegramCurrent === 'string') {
+                    telegramCurrent = parseInt(telegramCurrent.replace(/,/g, ''));
+                } else {
+                    telegramCurrent = parseInt(telegramCurrent); // 确保是整数，即使没有逗号
+                }
+
+
+                document.getElementById('gallery-current').value = (galleryCurrent / 1000000).toFixed(2);
+                document.getElementById('toplist-current').value = toplistCurrent;
+                document.getElementById('telegram-current').value = telegramCurrent;
+
+                updateProgress('gallery', galleryCurrent, 5000000);
+                updateProgress('toplist', toplistCurrent, 50);
+                updateProgress('telegram', telegramCurrent, 50);
+
+                document.getElementById('gallery-current').addEventListener('input', function() {
+                    galleryCurrent = parseFloat(this.value) * 1000000 || 0;
+                    localStorage.setItem('galleryCurrent', galleryCurrent);
+                    updateProgress('gallery', galleryCurrent, 5000000);
+                    updateData();
+                });
+
+                document.getElementById('toplist-current').addEventListener('input', function() {
+                    toplistCurrent = parseInt(this.value) || 0;
+                    localStorage.setItem('toplistCurrent', toplistCurrent);
+                    updateProgress('toplist', toplistCurrent, 50);
+                    updateData();
+                });
+
+                document.getElementById('telegram-current').addEventListener('input', function() {
+                    telegramCurrent = parseInt(this.value) || 0;
+                    localStorage.setItem('telegramCurrent', telegramCurrent);
+                    updateProgress('telegram', telegramCurrent, 50);
+                    updateData();
+                });
+            });
+
+        function updateProgress(id, current, increment) {
+            const progressBar = document.getElementById(id + '-progress');
+            const progressText = document.getElementById(id + '-progress-text');
+
+            let target = Math.ceil(current / increment) * increment;
+            let last = target - increment;
+
+            let progress;
+            if (id === 'toplist') {
+                target = Math.floor(current / increment) * increment;
+                last = target + increment;
+                progress = (last - current) / increment;
+            } else {
+                progress = (current - last) / increment;
+            }
+
+            progressBar.style.width = (progress * 100) + '%';
+            progressText.textContent = `${last} → ${target}`;
+        }
+
+        function updateData() {
+            const data = {
+                galleryCurrent: parseFloat(document.getElementById('gallery-current').value) * 1000000 || 0,
+                toplistCurrent: parseInt(document.getElementById('toplist-current').value) || 0,
+                telegramCurrent: parseInt(document.getElementById('telegram-current').value) || 0
+            };
+
+            fetch('data/data.json', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data updated:', data);
+            });
+        }
+    </script>
+</body>
+</html>
