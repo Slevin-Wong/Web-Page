@@ -1,218 +1,381 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Celebration Day Countdown</title> <style>
-        /* CSS 样式定义 */
-        body {
-            font-family: sans-serif; /* 设置页面默认字体为 sans-serif */
-            background-color: #f4f4f4; /* 设置页面背景颜色为浅灰色 */
-            display: flex; /* 使用 Flexbox 布局 */
-            flex-direction: column; /* Flexbox 主轴方向为垂直方向，元素垂直排列 */
-            align-items: center; /* Flexbox 元素在交叉轴上居中对齐 (水平居中) */
-            justify-content: center; /* Flexbox 元素在主轴上居中对齐 (垂直居中) */
-            min-height: 100vh; /* 页面最小高度为视口高度，确保内容至少占满整个屏幕 */
-            margin: 0; /* 移除body的默认外边距 */
-        }
-
-        .container {
-            background-color: #fff; /* 设置容器背景颜色为白色 */
-            padding: 40px; /* 设置容器内边距为40像素 */
-            border-radius: 10px; /* 设置容器边框圆角为10像素 */
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); /* 设置容器阴影效果 */
-            width: 500px; /* 设置容器宽度为500像素 */
-        }
-
-        h1 {
-            text-align: center; /* 设置标题文本居中对齐 */
-            margin-bottom: 30px; /* 设置标题下外边距为30像素 */
-            color: #333; /* 设置标题文本颜色为深灰色 */
-        }
-
-        .progress-item {
-            margin-bottom: 30px; /* 设置每个进度条项的下外边距为30像素 */
-        }
-
-        .input-group {
-            display: flex; /* 使用 Flexbox 布局 */
-            align-items: center; /* Flexbox 元素在交叉轴上居中对齐 (垂直居中标签和输入框) */
-            margin-bottom: 15px; /* 设置输入组的下外边距为15像素 */
-        }
-
-        .input-group label {
-            margin-right: 15px; /* 设置标签的右外边距为15像素，与输入框分隔开 */
-            font-size: 17px; /* **调整字体大小：** 设置指标标签字体大小为17像素 (稍微增大) */
-            font-weight: bold; /* **加粗：** 设置指标标签字体为粗体 */
-            color: #555; /* 设置标签文本颜色为灰色 (保持不变) */
-        }
-
-        .input-group input {
-            width: 120px; /* 设置输入框宽度为120像素 */
-            padding: 8px; /* 设置输入框内边距为8像素 */
-            border: 1px solid #ddd; /* 设置输入框边框为1像素灰色实线 */
-            border-radius: 5px; /* 设置输入框边框圆角为5像素 */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 设置输入框阴影效果 */
-            font-size: 16px; /* 设置输入框字体大小为16像素 */
-            color: #333; /* **调整颜色：** 设置输入框文本颜色为深灰色 (稍微加深，突出数值) */
-        }
-
-        .progress-label {
-            display: flex; /* 使用 Flexbox 布局 */
-            justify-content: space-between; /* Flexbox 元素在主轴上两端对齐，平均分布剩余空间 (使 "Progress:" 和进度文本分居两端) */
-            margin-bottom: 8px; /* 设置进度标签的下外边距为8像素 */
-            font-size: 16px; /* 设置进度标签字体大小为16像素 (保持不变) */
-            color: #555; /* 设置进度标签文本颜色为灰色 (保持不变) */
-        }
-
-        .progress-label span:first-child {
-            /* "Progress:" 标签样式 */
-            color: #555; /* 设置 "Progress:" 标签颜色为灰色 (保持不变) */
-        }
-
-        .progress-label span:last-child {
-            /* 进度范围文本 (例如 "0 → 0") 样式 */
-            color: #777; /* **调整颜色：** 设置进度范围文本颜色为浅灰色，弱化显示 */
-        }
-
-
-        .progress-bar {
-            width: 100%; /* 进度条宽度占满父元素 */
-            height: 25px; /* 进度条高度为25像素 */
-            background-color: #eee; /* 进度条背景颜色为浅灰色 */
-            border-radius: 8px; /* 进度条边框圆角为8像素 */
-            overflow: hidden; /* 隐藏超出边框的内容，用于实现圆角进度条效果 */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 设置进度条阴影效果 */
-        }
-
-        .progress-bar-inner {
-            height: 100%; /* 进度条内部元素高度占满父元素 */
-            background: linear-gradient(to right, #4CAF50, #8BC34A); /* 设置进度条内部元素背景为从绿色到黄绿色的线性渐变 */
-            border-radius: 8px; /* 进度条内部元素边框圆角为8像素，与外部进度条一致 */
-            width: 0; /* 初始宽度为0，通过JS动态设置宽度来显示进度 */
-            transition: width 0.5s ease-in-out; /* 设置宽度变化的过渡效果，使进度条动画平滑 */
-            animation: progress-animation 1s linear infinite; /* 应用名为 progress-animation 的动画，1秒周期，线性速度，无限循环 */
-        }
-
-        @keyframes progress-animation {
-            /* 定义名为 progress-animation 的关键帧动画 */
-            0% {
-                background-color: #4CAF50; /* 动画 0% 时背景颜色为绿色 */
-            }
-            50% {
-                background-color: #8BC34A; /* 动画 50% 时背景颜色为黄绿色 */
-            }
-            100% {
-                background-color: #4CAF50; /* 动画 100% 时背景颜色为绿色 (循环回到初始颜色) */
-            }
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信息图：索尼 ZX706 vs 凯音 N3 Ultra - 高端便携播放器对决</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - Hero Stat (Cayin Max Power): Large Text. Goal: Inform. Justification: Impactful intro. Method: HTML. NO SVG/Mermaid.
+        - Overall Comparison (8 Dims): Radar Chart. Goal: Compare. Justification: Holistic view. Library: Chart.js (Canvas). NO SVG/Mermaid.
+        - Output Power: Bar Chart. Goal: Compare. Justification: Clear power difference. Library: Chart.js (Canvas). NO SVG/Mermaid.
+        - Sound Features: Styled Text Callouts. Goal: Inform. Justification: Highlight qualitative tech. Method: HTML/Tailwind. NO SVG/Mermaid.
+        - Wireless Connectivity: Icon List (Unicode/HTML). Goal: Compare. Justification: Quick visual yes/no. Method: HTML/Tailwind. NO SVG/Mermaid.
+        - Wired Outputs: Styled List. Goal: Inform. Justification: Detail specific ports. Method: HTML/Tailwind. NO SVG/Mermaid.
+        - Battery Life: Horizontal Bar Chart. Goal: Compare. Justification: Clear duration difference. Library: Chart.js (Canvas). NO SVG/Mermaid.
+        - Portability (Size/Weight): Styled Text/Simple Shape. Goal: Compare. Justification: Visual size cue. Method: HTML/Tailwind. NO SVG/Mermaid.
+        - Sony Storage: Donut Chart. Goal: Inform (composition). Justification: Show internal breakdown. Library: Chart.js (Canvas). NO SVG/Mermaid.
+        - Cayin Storage/MicroSD: Text + Icon. Goal: Inform. Justification: Clarify storage strategy. Method: HTML/Tailwind. NO SVG/Mermaid.
+        - User Profiles: Structured HTML with Icons. Goal: Organize/Inform. Justification: Targeted advice. Method: HTML/Tailwind. NO SVG/Mermaid.
+        - Price: Text Callouts/Simple Bar. Goal: Inform. Justification: Quick price reference. Method: HTML/Tailwind or Chart.js (Canvas). NO SVG/Mermaid.
+        CONFIRMING NO SVG/Mermaid. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F0F4F8; /* Light Blue-Gray Background */ }
+        .font-sans { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .section-title { color: #073B4C; } /* Midnight Blue */
+        .card { background-color: white; border-radius: 0.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); padding: 1.5rem; margin-bottom: 1.5rem; }
+        .highlight-coral { color: #FF6B6B; }
+        .highlight-yellow { color: #FFD166; }
+        .highlight-teal { color: #06D6A0; }
+        .highlight-blue { color: #118AB2; }
+        .bg-coral-light { background-color: rgba(255, 107, 107, 0.1); }
+        .bg-yellow-light { background-color: rgba(255, 209, 102, 0.1); }
+        .bg-teal-light { background-color: rgba(6, 214, 160, 0.1); }
+        .bg-blue-light { background-color: rgba(17, 138, 178, 0.1); }
+        .stat-value { font-size: 2.5rem; font-weight: bold; color: #118AB2; } /* Cerulean Blue */
+        .icon-style { font-size: 1.5rem; margin-right: 0.5rem; }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-    <div class="container">  <h1>Celebration Day Countdown</h1>  <div class="progress-item">  <div class="input-group">  <label for="gallery-current">Total Gallery Visitors (Millions):</label>  <input type="number" id="gallery-current" value="0" step="0.01">  </div>
-            <div class="progress-label">  <span>Progress:</span>  <span id="gallery-progress-text">0 → 0</span>  </div>
-            <div class="progress-bar">  <div class="progress-bar-inner" id="gallery-progress"></div>  </div>
+<body class="font-sans text-gray-800">
+
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold section-title mb-4">高端便携播放器对决</h1>
+            <p class="text-xl text-gray-600 mb-6">索尼 ZX706 vs 凯音 N3 Ultra：发烧友的终极选择指南</p>
+            <div class="card bg-blue-light">
+                <p class="text-lg text-gray-700 mb-2">在追求极致音质的道路上，便携数字音频播放器 (DAP) 是智能手机无法替代的选择。它们专为高保真音频而生，提供纯净、动态且细节丰富的声音。今天，我们聚焦两款热门型号：</p>
+                <div class="flex flex-col md:flex-row justify-around items-center mt-4">
+                    <div class="text-center p-4">
+                        <h2 class="text-2xl font-semibold highlight-blue">索尼 NW-ZX706</h2>
+                        <p class="text-gray-600">智能安卓体验，索尼数字音频技术</p>
+                    </div>
+                    <div class="text-gray-400 text-2xl my-4 md:my-0">VS</div>
+                    <div class="text-center p-4">
+                        <h2 class="text-2xl font-semibold highlight-coral">凯音 N3 Ultra</h2>
+                        <p class="text-gray-600">纯粹胆管音色，强大驱动力</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="mb-12 card">
+            <h2 class="text-3xl font-semibold section-title mb-6 text-center">综合性能速览</h2>
+            <div class="chart-container h-[400px] md:h-[500px]">
+                <canvas id="overallRadarChart"></canvas>
+            </div>
+            <p class="text-sm text-gray-500 mt-4 text-center">注：基于报告中八大核心维度的星级评定 (1-5星)。</p>
+        </section>
+
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold section-title">核心差异深度剖析</h2>
+            <p class="text-gray-600 mt-2">深入了解两款播放器的关键特性，找到最适合您的那一款。</p>
         </div>
 
-        <div class="progress-item">  <div class="input-group">  <label for="toplist-current">Uploader All-Time Toplist:</label>  <input type="number" id="toplist-current" value="0">  </div>
-            <div class="progress-label">  <span>Progress:</span>  <span id="toplist-progress-text">0 → 0</span>  </div>
-            <div class="progress-bar">  <div class="progress-bar-inner" id="toplist-progress"></div>  </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <section class="card">
+                <h3 class="text-2xl font-semibold highlight-blue mb-4">音质与驱动力 <span class="icon-style">🎵</span></h3>
+                <p class="text-gray-700 mb-4">索尼以其S-Master HX数字放大技术提供纯净解析，凯音则以双AKM DAC配合军用级真空管带来独特模拟韵味和三种音色模式。</p>
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">输出功率对比 (4.4mm平衡口, 16Ω/32Ω)</h4>
+                    <div class="chart-container h-[250px]">
+                        <canvas id="outputPowerChart"></canvas>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-1 text-center">凯音N3 Ultra在驱动力上优势明显。</p>
+                </div>
+                <div class="space-y-3">
+                    <div class="p-3 bg-blue-light rounded">
+                        <strong class="highlight-blue">索尼 ZX706:</strong> S-Master HX 数字放大，DSEE Ultimate, 清晰精准。
+                    </div>
+                    <div class="p-3 bg-coral-light rounded">
+                        <strong class="highlight-coral">凯音 N3 Ultra:</strong> 双AK4493S DAC，军用级真空管，经典/现代胆管/固态三模式，温暖醇厚。
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h3 class="text-2xl font-semibold highlight-teal mb-4">连接性与生态 <span class="icon-style">🌐</span></h3>
+                <p class="text-gray-700 mb-4">索尼拥抱无线与流媒体，凯音专注纯粹有线体验。</p>
+                <div class="grid grid-cols-2 gap-4 mb-6 text-center">
+                    <div>
+                        <h4 class="text-lg font-semibold highlight-blue">索尼 ZX706</h4>
+                        <p class="text-3xl my-2">✔️</p><p class="text-sm text-gray-600">Wi-Fi & 蓝牙LDAC</p>
+                        <p class="text-3xl my-2">✔️</p><p class="text-sm text-gray-600">流媒体应用</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold highlight-coral">凯音 N3 Ultra</h4>
+                        <p class="text-3xl my-2">❌</p><p class="text-sm text-gray-600">无 Wi-Fi & 蓝牙</p>
+                        <p class="text-3xl my-2">❌</p><p class="text-sm text-gray-600">无流媒体应用</p>
+                    </div>
+                </div>
+                <h4 class="text-lg font-semibold text-gray-700 mb-2">有线输出接口：</h4>
+                <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
+                    <li><strong>索尼:</strong> 3.5mm耳机, 4.4mm平衡耳机, USB-C</li>
+                    <li><strong>凯音:</strong> 3.5mm耳机, 4.4mm平衡耳机, 3.5mm/4.4mm线路输出, USB-C (数字/同轴/光纤输出)</li>
+                </ul>
+            </section>
+
+            <section class="card">
+                <h3 class="text-2xl font-semibold highlight-yellow mb-4">续航与便携 <span class="icon-style">🔋</span></h3>
+                <p class="text-gray-700 mb-4">索尼在续航上表现优异，凯音则在体积控制上略占优势。</p>
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-2">播放时长对比 (FLAC)</h4>
+                    <div class="chart-container h-[200px]">
+                        <canvas id="batteryLifeChart"></canvas>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div class="p-3 bg-yellow-light rounded">
+                        <strong class="highlight-yellow">索尼 ZX706:</strong><br>
+                        尺寸: 72.5x132.3x16.9mm<br>
+                        重量: 227克
+                    </div>
+                    <div class="p-3 bg-yellow-light rounded">
+                        <strong class="highlight-yellow">凯音 N3 Ultra:</strong><br>
+                        尺寸: 125x65.5x19.5mm<br>
+                        重量: 204克
+                    </div>
+                </div>
+            </section>
+
+            <section class="card">
+                <h3 class="text-2xl font-semibold section-title mb-4">存储策略 <span class="icon-style">💾</span></h3>
+                <p class="text-gray-700 mb-4">索尼提供少量内置存储，凯音完全依赖外部扩展。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <div>
+                        <h4 class="text-lg font-semibold highlight-blue mb-2">索尼 ZX706 (32GB版)</h4>
+                        <div class="chart-container h-[180px] mx-auto">
+                            <canvas id="sonyStorageChart"></canvas>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-1 text-center">内置32GB (约18GB可用)</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold highlight-coral mb-2">凯音 N3 Ultra</h4>
+                        <div class="text-center p-4 bg-coral-light rounded">
+                            <p class="text-2xl font-bold">0 GB</p>
+                            <p class="text-sm text-gray-600">无内置存储</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6 p-3 bg-teal-light rounded text-center">
+                    <p class="text-gray-700"><span class="icon-style">➕</span> 两者均支持MicroSD卡扩展 (最高1TB+)</p>
+                </div>
+            </section>
         </div>
 
-        <div class="progress-item">  <div class="input-group">  <label for="telegram-current">Telegram Group Members:</label>  <input type="number" id="telegram-current" value="0">  </div>
-            <div class="progress-label">  <span>Progress:</span>  <span id="telegram-progress-text">0 → 0</span>  </div>
-            <div class="progress-bar">  <div class="progress-bar-inner" id="telegram-progress"></div>  </div>
-        </div>
+        <section class="mt-12 card">
+            <h2 class="text-3xl font-semibold section-title mb-6 text-center">哪款播放器更适合您？</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-6 bg-blue-light rounded-lg">
+                    <h3 class="text-2xl font-semibold highlight-blue mb-3"><span class="icon-style">📱</span> 全能体验派 (索尼 ZX706)</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>追求全面的功能与便捷性</li>
+                        <li>依赖在线流媒体服务</li>
+                        <li>喜爱索尼标志性的纯净数字音质</li>
+                        <li>主要使用易于驱动的耳机</li>
+                        <li>看重长续航和品牌综合实力</li>
+                    </ul>
+                </div>
+                <div class="p-6 bg-coral-light rounded-lg">
+                    <h3 class="text-2xl font-semibold highlight-coral mb-3"><span class="icon-style">🎧</span> 纯粹音质党 (凯音 N3 Ultra)</h3>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li>拥有大量本地高品质音乐文件</li>
+                        <li>渴望体验胆管独特的模拟音色</li>
+                        <li>需要强大的驱动力来推动各种耳机</li>
+                        <li>不介意牺牲无线连接和流媒体功能</li>
+                        <li>追求极致性价比和个性化听感</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-12 card">
+            <h2 class="text-3xl font-semibold section-title mb-6 text-center">价格区间快照 <span class="icon-style">💰</span></h2>
+            <div class="flex flex-col md:flex-row justify-around items-center text-center">
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold highlight-blue">索尼 NW-ZX706/707</h3>
+                    <p class="stat-value">~$500-900</p>
+                    <p class="text-gray-600">美元 (视型号和地区)</p>
+                </div>
+                <div class="p-4">
+                    <h3 class="text-xl font-semibold highlight-coral">凯音 N3 Ultra</h3>
+                    <p class="stat-value">~$529-799</p>
+                    <p class="text-gray-600">美元 (视零售商)</p>
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 mt-4 text-center">凯音N3 Ultra在同等音质追求下，通常更具价格竞争力。</p>
+        </section>
+
+        <footer class="mt-12 text-center py-8 border-t border-gray-300">
+            <p class="text-lg text-gray-700 mb-4">最终的选择取决于您的个人听音偏好、功能需求优先级以及预算考量。希望本信息图能助您做出明智决策！</p>
+            <p class="text-sm text-gray-500">数据来源：索尼 ZX706 与 凯音 N3 Ultra 便携音乐播放器深度对比报告。</p>
+        </footer>
+
     </div>
 
     <script>
-        // JavaScript 代码
-        fetch('data/data.json') // 使用 fetch API 请求 data/data.json 文件
-            .then(response => response.json()) // 当请求成功后，将响应解析为 JSON 格式
-            .then(data => { // 接收解析后的 JSON 数据
+        const CHART_COLORS = {
+            sonyBlue: '#118AB2', // Cerulean Blue
+            cayinCoral: '#FF6B6B', // Coral Red
+            neutralYellow: '#FFD166', // Sunny Yellow
+            accentTeal: '#06D6A0', // Teal Green
+            darkText: '#073B4C' // Midnight Blue
+        };
 
-                // 从 data.json 读取数据，并移除千分位逗号 (如果存在)
-                // 使用 toString().replace(/,/g, '') 将数值转换为字符串，并移除所有逗号
-                // 如果 data.xxxCurrent 不存在，则默认为 '0'
-                let galleryCurrent = data.galleryCurrent ? data.galleryCurrent.toString().replace(/,/g, '') : '0';
-                let toplistCurrent = data.toplistCurrent ? data.toplistCurrent.toString().replace(/,/g, '') : '0';
-                let telegramCurrent = data.telegramCurrent ? data.telegramCurrent.toString().replace(/,/g, '') : '0';
-
-                // 确保移除逗号后转换为数字，再进行后续操作
-                // parseFloat() 将 galleryCurrent 转换为浮点数 (用于百万访客，可能包含小数)
-                // parseInt() 将 toplistCurrent 和 telegramCurrent 转换为整数
-                document.getElementById('gallery-current').value = (parseFloat(galleryCurrent) / 1000000).toFixed(2); // 将处理后的画廊访客数 (百万) 设置为输入框的值，保留两位小数
-                document.getElementById('toplist-current').value = parseInt(toplistCurrent); // 将处理后的上传者榜单排名设置为输入框的值
-                document.getElementById('telegram-current').value = parseInt(telegramCurrent); // 将处理后的 Telegram 群组成员数设置为输入框的值
-
-                updateProgress('gallery', galleryCurrent, 5000000); // 初始化画廊访客进度条
-                updateProgress('toplist', toplistCurrent, 50); // 初始化上传者榜单排名进度条
-                updateProgress('telegram', telegramCurrent, 50); // 初始化 Telegram 群组成员数进度条
-
-                // 为画廊访客输入框添加 input 事件监听器，当输入框内容改变时触发
-                document.getElementById('gallery-current').addEventListener('input', function() {
-                    galleryCurrent = parseFloat(this.value) * 1000000 || 0; // 获取输入框的值，转换为数字 (百万 -> 实际数量)，如果为空或转换失败则默认为0
-                    localStorage.setItem('galleryCurrent', galleryCurrent); // 将画廊访客数保存到 localStorage
-                    updateProgress('gallery', galleryCurrent, 5000000); // 更新画廊访客进度条
-                    updateData(); // 调用 updateData 函数更新数据 (PUT 请求，但代码中PUT请求部分有错误，目前不会生效)
-                });
-
-                // 为上传者榜单排名输入框添加 input 事件监听器
-                document.getElementById('toplist-current').addEventListener('input', function() {
-                    toplistCurrent = parseInt(this.value) || 0; // 获取输入框的值，转换为整数，如果为空或转换失败则默认为0
-                    localStorage.setItem('toplistCurrent', toplistCurrent); // 将上传者榜单排名保存到 localStorage
-                    updateProgress('toplist', toplistCurrent, 50); // 更新上传者榜单排名进度条
-                    updateData(); // 调用 updateData 函数更新数据 (PUT 请求，但代码中PUT请求部分有错误，目前不会生效)
-                });
-
-                // 为 Telegram 群组成员数输入框添加 input 事件监听器
-                document.getElementById('telegram-current').addEventListener('input', function() {
-                    telegramCurrent = parseInt(this.value) || 0; // 获取输入框的值，转换为整数，如果为空或转换失败则默认为0
-                    localStorage.setItem('telegramCurrent', telegramCurrent); // 将 Telegram 群组成员数保存到 localStorage
-                    updateProgress('telegram', telegramCurrent, 50); // 更新 Telegram 群组成员数进度条
-                    updateData(); // 调用 updateData 函数更新数据 (PUT 请求，但代码中PUT请求部分有错误，目前不会生效)
-                });
-            });
-
-        // updateProgress 函数：更新进度条和进度文本
-        function updateProgress(id, current, increment) {
-            const progressBar = document.getElementById(id + '-progress'); // 获取进度条内部元素
-            const progressText = document.getElementById(id + '-progress-text'); // 获取进度文本元素
-
-            let target = Math.ceil(current / increment) * increment; // 计算目标值，向上取整到 increment 的倍数
-            let last = target - increment; // 计算上一个目标值
-
-            let progress; // 声明进度值变量
-            if (id === 'toplist') { // 如果是上传者榜单排名进度条
-                target = Math.floor(current / increment) * increment; // 目标值向下取整到 increment 的倍数 (榜单排名越小越好)
-                last = target + increment; // 上一个目标值加 increment
-                progress = (last - current) / increment; // 进度计算方式不同 (值越小进度越大)
-            } else { // 其他进度条 (画廊访客，Telegram 群组)
-                progress = (current - last) / increment; // 默认进度计算方式 (值越大进度越大)
-            }
-
-            progressBar.style.width = (progress * 100) + '%'; // 设置进度条内部元素的宽度，百分比形式
-            progressText.textContent = `${last} → ${target}`; // 更新进度文本，显示上一个目标值和当前目标值
-        }
-
-        // updateData 函数：更新数据 (PUT 请求到 data.json，但代码中PUT请求部分有错误，目前不会生效)
-        function updateData() {
-            const data = { // 创建包含当前输入框值的 JSON 数据对象
-                galleryCurrent: parseFloat(document.getElementById('gallery-current').value) * 1000000 || 0, // 获取画廊访客数输入框的值并转换为实际数量
-                toplistCurrent: parseInt(document.getElementById('toplist-current').value) || 0, // 获取上传者榜单排名输入框的值
-                telegramCurrent: parseInt(document.getElementById('telegram-current').value) || 0  // 获取 Telegram 群组成员数输入框的值
-            };
-
-            fetch('data/data.json', { // 发起 PUT 请求到 data/data.json (用于更新数据)
-                method: 'PUT', // 设置请求方法为 PUT
-                headers: { // 设置请求头
-                    'Content-Type': 'application/json' // 设置 Content-Type 为 application/json，表明发送的是 JSON 数据
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: CHART_COLORS.darkText,
+                        font: { size: 12 }
+                    }
                 },
-                body: JSON.stringify(data) // 将 JSON 数据对象转换为 JSON 字符串作为请求体
-            })
-            .then(response => response.json()) // 当请求成功后，将响应解析为 JSON 格式
-            .then(data => { // 接收解析后的 JSON 数据
-                console.log('Data updated:', data); // 在控制台输出 "Data updated:" 和返回的数据，用于调试
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                              return label.join(' ');
+                            } else {
+                              return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine.trim());
+                    currentLine = word + ' ';
+                } else {
+                    currentLine += word + ' ';
+                }
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        // Overall Radar Chart
+        const radarCtx = document.getElementById('overallRadarChart');
+        if (radarCtx) {
+            new Chart(radarCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['音质', ['存储与', '扩展性'], '续航能力', '连接性', ['操作体验与', '人机交互'], ['便携性与', '设计'], '附加功能', ['品牌与', '价格']],
+                    datasets: [{
+                        label: '索尼 ZX706',
+                        data: [4.17, 4, 5, 4.5, 4.4, 4.33, 4.5, 4], // Averaged/representative ratings
+                        borderColor: CHART_COLORS.sonyBlue,
+                        backgroundColor: 'rgba(17, 138, 178, 0.2)',
+                        pointBackgroundColor: CHART_COLORS.sonyBlue,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: CHART_COLORS.sonyBlue
+                    }, {
+                        label: '凯音 N3 Ultra',
+                        data: [4.5, 3, 3, 3, 4.2, 4.33, 3.75, 4], // Averaged/representative ratings
+                        borderColor: CHART_COLORS.cayinCoral,
+                        backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                        pointBackgroundColor: CHART_COLORS.cayinCoral,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: CHART_COLORS.cayinCoral
+                    }]
+                },
+                options: { ...commonChartOptions,
+                    scales: {
+                        r: {
+                            angleLines: { display: true, color: 'rgba(7, 59, 76, 0.2)' },
+                            suggestedMin: 0,
+                            suggestedMax: 5,
+                            grid: { color: 'rgba(7, 59, 76, 0.2)' },
+                            pointLabels: { color: CHART_COLORS.darkText, font: {size: 11} },
+                            ticks: { 
+                                backdropColor: 'rgba(255,255,255,0.7)', 
+                                color: CHART_COLORS.darkText,
+                                stepSize: 1,
+                                font: {size: 10}
+                            }
+                        }
+                    }
+                }
             });
         }
+
+        // Output Power Chart
+        const outputPowerCtx = document.getElementById('outputPowerChart');
+        if (outputPowerCtx) {
+            new Chart(outputPowerCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['索尼 ZX706 (4.4mm)', '凯音 N3 Ultra (4.4mm)'],
+                    datasets: [{
+                        label: '输出功率 (mW @16/32Ω)',
+                        data: [230, 600],
+                        backgroundColor: [CHART_COLORS.sonyBlue, CHART_COLORS.cayinCoral],
+                        borderColor: [CHART_COLORS.sonyBlue, CHART_COLORS.cayinCoral],
+                        borderWidth: 1
+                    }]
+                },
+                options: { ...commonChartOptions, indexAxis: 'y',
+                    scales: { x: { grid: { display: false }, ticks: { color: CHART_COLORS.darkText } }, y: { grid: { display: false }, ticks: { color: CHART_COLORS.darkText, font: {size: 10} } } }
+                }
+            });
+        }
+
+        // Battery Life Chart
+        const batteryLifeCtx = document.getElementById('batteryLifeChart');
+        if (batteryLifeCtx) {
+            new Chart(batteryLifeCtx, {
+                type: 'bar', // Horizontal bar is achieved with indexAxis: 'y'
+                data: {
+                    labels: [wrapLabel('索尼 ZX706 (FLAC 44.1kHz, 3.5mm)', 16), wrapLabel('凯音 N3 Ultra (固态, 3.5mm)',16), wrapLabel('凯音 N3 Ultra (胆管, 4.4mm)',16)],
+                    datasets: [{
+                        label: '播放时长 (小时)',
+                        data: [25, 11.8, 7.6],
+                        backgroundColor: [CHART_COLORS.sonyBlue, CHART_COLORS.cayinCoral, CHART_COLORS.neutralYellow],
+                        borderColor: [CHART_COLORS.sonyBlue, CHART_COLORS.cayinCoral, CHART_COLORS.neutralYellow],
+                        borderWidth: 1
+                    }]
+                },
+                options: { ...commonChartOptions, indexAxis: 'y',
+                    scales: { x: { grid: { display: false }, ticks: { color: CHART_COLORS.darkText } }, y: { grid: { display: false }, ticks: { color: CHART_COLORS.darkText, font: {size: 10} } } }
+                }
+            });
+        }
+        
+        // Sony Storage Chart
+        const sonyStorageCtx = document.getElementById('sonyStorageChart');
+        if (sonyStorageCtx) {
+            new Chart(sonyStorageCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['可用空间 (约18GB)', '系统占用 (约14GB)'],
+                    datasets: [{
+                        label: '索尼 ZX706 32GB 内置存储',
+                        data: [18, 14],
+                        backgroundColor: [CHART_COLORS.accentTeal, CHART_COLORS.neutralYellow],
+                        hoverOffset: 4
+                    }]
+                },
+                options: { ...commonChartOptions, cutout: '60%' }
+            });
+        }
+
     </script>
 </body>
 </html>
